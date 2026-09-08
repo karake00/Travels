@@ -24,6 +24,19 @@ namespace Seido.Utilities.SeedGenerator
         public string Quote { get; init; }
         public string Author { get; init; }
     }
+
+    public class SeededAttraction
+    {
+        public string AttractionName { get; init; }
+        public string AttractionDescription { get; init; }
+    }
+
+    public class SeededReview
+    {
+        public string Title { get; init; }
+        public string Comment { get; init; }
+        public int Rating { get; init; }
+    }
     #endregion
 
     public class SeedGenerator : Random
@@ -144,6 +157,22 @@ namespace Seido.Utilities.SeedGenerator
             + " " + _seeds.Music.AlbumNames[this.Next(0, _seeds.Music.AlbumNames.Count)]
             + " " + _seeds.Music.AlbumNames[this.Next(0, _seeds.Music.AlbumNames.Count)]
             + " " + _seeds.Music.AlbumSuffix[this.Next(0, _seeds.Music.AlbumSuffix.Count)];
+        #endregion
+
+        #region Attractions
+        public List<SeededAttraction> AllAttractions => _seeds.Attractions
+            .Select(a => new SeededAttraction { AttractionName = a.AttractionName, AttractionDescription = a.AttractionDescription })
+            .ToList();
+
+        public SeededAttraction Attraction => AllAttractions[this.Next(0, AllAttractions.Count)];
+        #endregion
+
+        #region Reviews
+        public List<SeededReview> AllReviews => _seeds.Reviews
+            .Select(r => new SeededReview { Title = r.Title, Comment = r.Comment, Rating = r.Rating })
+            .ToList();
+
+        public SeededReview Review => AllReviews[this.Next(0, AllReviews.Count)];
         #endregion
 
         #region DateTime, bool and decimal
@@ -329,7 +358,7 @@ namespace Seido.Utilities.SeedGenerator
             return retList;
         }
         #endregion
- 
+
         #region initialize master content
         SeedJsonContent CreateMasterSeedFile()
         {
@@ -666,7 +695,7 @@ namespace Seido.Utilities.SeedGenerator
         {
             #region Country towards json file
             string _jsonCountry;
-            public string jsonCountry { get => _jsonCountry; set { _jsonCountry = value; }}
+            public string jsonCountry { get => _jsonCountry; set { _jsonCountry = value; } }
             #endregion
 
             [JsonIgnore]
@@ -839,6 +868,41 @@ namespace Seido.Utilities.SeedGenerator
             public List<string> AlbumSuffix => _albumSuffix;
         }
 
+        class SeedAttraction
+        {
+            string _jsonAttractionName;
+            public string jsonAttractionName { get => _jsonAttractionName; set => _jsonAttractionName = value; }
+
+            string _jsonAttractionDescription;
+            public string jsonAttractionDescription { get => _jsonAttractionDescription; set => _jsonAttractionDescription = value; }
+
+            [JsonIgnore]
+            public string AttractionName => _jsonAttractionName;
+
+            [JsonIgnore]
+            public string AttractionDescription => _jsonAttractionDescription;
+        }
+        class SeedReview
+        {
+            string _jsonTitle;
+            public string jsonTitle { get => _jsonTitle; set => _jsonTitle = value; }
+
+            string _jsonComment;
+            public string jsonComment { get => _jsonComment; set => _jsonComment = value; }
+
+            int _jsonRating;
+            public int jsonRating { get => _jsonRating; set => _jsonRating = value; }
+
+            [JsonIgnore]
+            public string Title => _jsonTitle;
+
+            [JsonIgnore]
+            public string Comment => _jsonComment;
+
+            [JsonIgnore]
+            public int Rating => _jsonRating;
+        }
+
         class SeedJsonContent
         {
             public List<SeedQuote> Quotes { get; set; } = new List<SeedQuote>();
@@ -847,6 +911,10 @@ namespace Seido.Utilities.SeedGenerator
             public SeedNames Names { get; set; } = new SeedNames();
             public SeedDomains Domains { get; set; } = new SeedDomains();
             public SeedMusic Music { get; set; } = new SeedMusic();
+
+            public List<SeedAttraction> Attractions { get; set; } = new List<SeedAttraction>();
+            public List<SeedReview> Reviews { get; set; } = new List<SeedReview>();
+
 
 
             public string WriteFile(string FileName) => WriteFile(this, FileName);
@@ -881,19 +949,20 @@ namespace Seido.Utilities.SeedGenerator
                 return Path.Combine(documentPath, name);
             }
 
-            public static bool FileExists(string FileName){
+            public static bool FileExists(string FileName)
+            {
 
                 var fn = Path.GetFileName(FileName);
                 if (fn == FileName)
                 {
                     //no path in FileName use default directory
-                   return File.Exists(fname(FileName));
+                    return File.Exists(fname(FileName));
                 }
-    
+
                 return File.Exists(FileName);
             }
         }
-    #endregion
+        #endregion
     }
 }
 

@@ -179,24 +179,29 @@
   ],
   "Addresses": [
     {
-      "jsonCountry": "Sweden",
-      "jsonStreets": "Svedjevägen, Ringvägen, Vasagatan, Odenplan, Birger Jarlsgatan, Äppelviksvägen, Kvarnbacksvägen",
-      "jsonCities": "Stockholm, Göteborg, Malmö, Uppsala, Linköping, Örebro"
+      "jsonCountry": "Eastern Kingdoms",
+      "jsonCities": "Stormwind City, Ironforge, Booty Bay",
+      "jsonStreets": "Trade District 1, Old Town 5, Mage Quarter 12, The Great Forge 1, Tinker Town 3, The Docks 1"
     },
     {
-      "jsonCountry": "Norway",
-      "jsonStreets": "Bygdoy alle, Frognerveien, Pilestredet, Vidars gate, Sågveien, Toftes gate, Gardeveiend",
-      "jsonCities": "Oslo, Bergen, Trondheim, Stavanger, Dramen"
+      "jsonCountry": "Kalimdor",
+      "jsonCities": "Orgrimmar, Thunder Bluff, Gadgetzan",
+      "jsonStreets": "Valley of Strength 1, Valley of Honor 3, The Drag 2, Elder Rise 1, Hunter Rise 2, Gadgetzan Market 1"
     },
     {
-      "jsonCountry": "Denmark",
-      "jsonStreets": "Rolighedsvej, Fensmarkgade, Svanevej, Gröndalsvej, Githersgade, Classensgade, Moltekesvej",
-      "jsonCities": "Köpenhamn, Århus, Odense, Aahlborg, Esbjerg"
+      "jsonCountry": "Northrend",
+      "jsonCities": "Dalaran, Kamagua",
+      "jsonStreets": "Runeweaver Square 1, Krasus Landing 1, Kamagua Village 1"
     },
     {
-      "jsonCountry": "Finland",
-      "jsonStreets": "Arkandiankatu, Liisankatu, Ruoholahdenkatu, Pohjoistranta, Eerikinkatu, Vauhtitie, Itainen Vaideki",
-      "jsonCities": "Helsingfors, Espoo, Tampere, Vaanta, Oulu"
+      "jsonCountry": "Pandaria",
+      "jsonCities": "Halfhill",
+      "jsonStreets": "The Tillers Market 1, Stormstout Brewery Road 1"
+    },
+    {
+      "jsonCountry": "Zandalar",
+      "jsonCities": "Dazar'alor",
+      "jsonStreets": "The Great Seal 1, Zocalo 1, Port of Zandalar 1"
     }
   ],
   "Names": {
@@ -212,5 +217,289 @@
     "jsonAlbumNames": "Heaven, Rock, Moon, Cosmos, Walk, Hunky, Blue, Highway, Satisfaction, California, Stairway, Purple, Senor",
     "jsonAlbumPrefix": "A, The, One, The great, A wonderful, Let's rock with, Relaxing, Chill with, Dance with",
     "jsonAlbumSuffix": "with friends, with love, with fire, and walking, being happy"
-  }
+  },
+  "Attractions": [
+    {
+      "jsonAttractionName": "Stormwind Keep",
+      "jsonAttractionDescription": "Mighty castle with the throne room"
+    },
+    {
+      "jsonAttractionName": "The Pig and Whistle",
+      "jsonAttractionDescription": "Classic tavern"
+    },
+    {
+      "jsonAttractionName": "The Blue Recluse",
+      "jsonAttractionDescription": "Cozy cafe with a magical atmosphere"
+    },
+    {
+      "jsonAttractionName": "King Magni's Throne",
+      "jsonAttractionDescription": "Historical monument under the mountain"
+    },
+    {
+      "jsonAttractionName": "Deeprun Tram",
+      "jsonAttractionDescription": "Underground transport between cities"
+    },
+    {
+      "jsonAttractionName": "Salty Sailor Tavern",
+      "jsonAttractionDescription": "Rowdy tavern near the sea"
+    },
+    {
+      "jsonAttractionName": "Grommash Hold",
+      "jsonAttractionDescription": "The Warchief's hold"
+    },
+    {
+      "jsonAttractionName": "The Wyvern's Tail",
+      "jsonAttractionDescription": "Popular hangout for orcs and trolls"
+    },
+    {
+      "jsonAttractionName": "Orgrimmar Arena",
+      "jsonAttractionDescription": "For the battle-hungry"
+    },
+    {
+      "jsonAttractionName": "Baine's Totem",
+      "jsonAttractionDescription": "Calm and peaceful viewpoint"
+    },
+    {
+      "jsonAttractionName": "Thunder Bluff Inn",
+      "jsonAttractionDescription": "Rest at high altitudes"
+    },
+    {
+      "jsonAttractionName": "Noggenfogger Elixir Stand",
+      "jsonAttractionDescription": "Test brews at your own risk"
+    },
+    {
+      "jsonAttractionName": "The Violet Citadel",
+      "jsonAttractionDescription": "Impressive architecture and books"
+    },
+    {
+      "jsonAttractionName": "Dalaran Flight Master",
+      "jsonAttractionDescription": "Best view before departure"
+    },
+    {
+      "jsonAttractionName": "Tuskarr Fishing Spot",
+      "jsonAttractionDescription": "Incredibly good fishing here!"
+    },
+    {
+      "jsonAttractionName": "Halfhill Inn",
+      "jsonAttractionDescription": "Best food in all of Pandaria"
+    },
+    {
+      "jsonAttractionName": "Stormstout Brewery",
+      "jsonAttractionDescription": "A brewery experience you won't forget"
+    },
+    {
+      "jsonAttractionName": "King Rastakhan's Throne",
+      "jsonAttractionDescription": "Massive temple in gold"
+    },
+    {
+      "jsonAttractionName": "Dinosaur Enclosure",
+      "jsonAttractionDescription": "Exciting park with roaring beasts"
+    },
+    {
+      "jsonAttractionName": "Zandalari Shipyard",
+      "jsonAttractionDescription": "Check out the enormous warships"
+    }
+  ],
+  "Reviews": [
+    {
+      "jsonTitle": "Yummy",
+      "jsonComment": "Lots of rats in the alleys outside perfect!",
+      "jsonRating": 5
+    },
+    {
+      "jsonTitle": "Messy",
+      "jsonComment": "A bit too messy for my taste",
+      "jsonRating": 3
+    },
+    {
+      "jsonTitle": "Tasty",
+      "jsonComment": "Best coffee in town!",
+      "jsonRating": 5
+    },
+    {
+      "jsonTitle": "Expensive",
+      "jsonComment": "Cozy place but expensive",
+      "jsonRating": 3
+    },
+    {
+      "jsonTitle": "Nice stone",
+      "jsonComment": "Very impressive dwarven architecture",
+      "jsonRating": 4
+    },
+    {
+      "jsonTitle": "Warm",
+      "jsonComment": "A bit too warm in here",
+      "jsonRating": 3
+    },
+    {
+      "jsonTitle": "Delayed",
+      "jsonComment": "The train was delayed again",
+      "jsonRating": 2
+    },
+    {
+      "jsonTitle": "Fast",
+      "jsonComment": "Fast way to travel",
+      "jsonRating": 4
+    },
+    {
+      "jsonTitle": "Scary",
+      "jsonComment": "It moved too fast hid under the seat",
+      "jsonRating": 2
+    },
+    {
+      "jsonTitle": "Fish!",
+      "jsonComment": "Lots of fish scraps to taste at the harbor",
+      "jsonRating": 5
+    },
+    {
+      "jsonTitle": "Watch out",
+      "jsonComment": "Lots of pirates hold on to your wallet",
+      "jsonRating": 3
+    },
+    {
+      "jsonTitle": "Dark",
+      "jsonComment": "Grand and dark",
+      "jsonRating": 3
+    },
+    {
+      "jsonTitle": "Exciting",
+      "jsonComment": "Could hide well here",
+      "jsonRating": 4
+    },
+    {
+      "jsonTitle": "Great hangout",
+      "jsonComment": "Great hangout and nice atmosphere",
+      "jsonRating": 4
+    },
+    {
+      "jsonTitle": "Shadow",
+      "jsonComment": "Nice and quiet in the shade",
+      "jsonRating": 4
+    },
+    {
+      "jsonTitle": "Ouch",
+      "jsonComment": "Ran straight in got defeated in two seconds",
+      "jsonRating": 1
+    },
+    {
+      "jsonTitle": "Epic",
+      "jsonComment": "Awesome battles!",
+      "jsonRating": 5
+    },
+    {
+      "jsonTitle": "High",
+      "jsonComment": "Amazing tree trunks and heights",
+      "jsonRating": 5
+    },
+    {
+      "jsonTitle": "Wind",
+      "jsonComment": "Very windy up there",
+      "jsonRating": 3
+    },
+    {
+      "jsonTitle": "Peaceful",
+      "jsonComment": "Very peaceful",
+      "jsonRating": 5
+    },
+    {
+      "jsonTitle": "Good",
+      "jsonComment": "Got a good rest before the next adventure",
+      "jsonRating": 4
+    },
+    {
+      "jsonTitle": "Weird",
+      "jsonComment": "Got turned into a skeleton. Fun for five minutes",
+      "jsonRating": 3
+    },
+    {
+      "jsonTitle": "Haha!",
+      "jsonComment": "Funniest thing I have tried!",
+      "jsonRating": 5
+    },
+    {
+      "jsonTitle": "Educational",
+      "jsonComment": "Very educational place",
+      "jsonRating": 5
+    },
+    {
+      "jsonTitle": "Climbable",
+      "jsonComment": "Like the floating books",
+      "jsonRating": 4
+    },
+    {
+      "jsonTitle": "The view",
+      "jsonComment": "Incredible view above the clouds",
+      "jsonRating": 5
+    },
+    {
+      "jsonTitle": "Cold",
+      "jsonComment": "Good dragons but a bit cold in the air",
+      "jsonRating": 4
+    },
+    {
+      "jsonTitle": "Awesome!",
+      "jsonComment": "I flew on a giant dragon!",
+      "jsonRating": 5
+    },
+    {
+      "jsonTitle": "Big catch",
+      "jsonComment": "Best ice fishing! Caught a really big one here",
+      "jsonRating": 5
+    },
+    {
+      "jsonTitle": "The food",
+      "jsonComment": "Fish! Yummy",
+      "jsonRating": 4
+    },
+    {
+      "jsonTitle": "Cold but worth it",
+      "jsonComment": "Caught a lot of fish great spot for farming",
+      "jsonRating": 4
+    },
+    {
+      "jsonTitle": "Food coma",
+      "jsonComment": "Awesome food!",
+      "jsonRating": 5
+    },
+    {
+      "jsonTitle": "Nice",
+      "jsonComment": "Nice staff",
+      "jsonRating": 4
+    },
+    {
+      "jsonTitle": "Purrfect",
+      "jsonComment": "Lots of good food here purred the whole time",
+      "jsonRating": 5
+    },
+    {
+      "jsonTitle": "Chaos",
+      "jsonComment": "Monkeys everywhere!",
+      "jsonRating": 2
+    },
+    {
+      "jsonTitle": "Interesting",
+      "jsonComment": "Well worth a visit for the drinks",
+      "jsonRating": 4
+    },
+    {
+      "jsonTitle": "Good beer",
+      "jsonComment": "Really nice brew they have here even if the monkeys were rowdy",
+      "jsonRating": 5
+    },
+    {
+      "jsonTitle": "Hard to navigate",
+      "jsonComment": "Cool castle but hard to find your way out",
+      "jsonRating": 3
+    },
+    {
+      "jsonTitle": "Mighty",
+      "jsonComment": "Very mighty to see the throne",
+      "jsonRating": 5
+    },
+    {
+      "jsonTitle": "Gold",
+      "jsonComment": "So much gold everywhere!",
+      "jsonRating": 5
+    }
+  ]
 }
