@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Newtonsoft.Json;
 using Models;
 
 namespace DbModels;
@@ -18,5 +19,13 @@ public class CityDbM : City
 
     //Tell EF Core to not create this list (database can not create a list with interface)
     [NotMapped]
-    public override ICountry Country {get; set;}
+    public override ICountry Country 
+    {
+        get => CountryDbM; 
+        set => CountryDbM = value as CountryDbM;
+    }
+
+    //Preventing infinite loops
+    [JsonIgnore]
+    public virtual CountryDbM CountryDbM {get; set;}
 }

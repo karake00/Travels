@@ -28,6 +28,12 @@ namespace DbContext.Migrations.SqlServerDbContext
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("CountryDbMCountryId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CountryId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("varchar(200)");
@@ -36,6 +42,8 @@ namespace DbContext.Migrations.SqlServerDbContext
                         .HasColumnType("bit");
 
                     b.HasKey("CityId");
+
+                    b.HasIndex("CountryDbMCountryId");
 
                     b.ToTable("Cities");
                 });
@@ -56,6 +64,20 @@ namespace DbContext.Migrations.SqlServerDbContext
                     b.HasKey("CountryId");
 
                     b.ToTable("Countries");
+                });
+
+            modelBuilder.Entity("DbModels.CityDbM", b =>
+                {
+                    b.HasOne("DbModels.CountryDbM", "CountryDbM")
+                        .WithMany("CitiesDbM")
+                        .HasForeignKey("CountryDbMCountryId");
+
+                    b.Navigation("CountryDbM");
+                });
+
+            modelBuilder.Entity("DbModels.CountryDbM", b =>
+                {
+                    b.Navigation("CitiesDbM");
                 });
 #pragma warning restore 612, 618
         }

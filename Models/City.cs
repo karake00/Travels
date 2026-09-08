@@ -7,7 +7,10 @@ public class City : ICity, ISeed<City>
 {
     public virtual Guid CityId { get; set; }
     public virtual string Name { get; set; }
+    
+    public virtual Guid CountryId {get;set;}
     public virtual ICountry Country { get; set; }
+    
     public bool Seeded { get; set; }
 
     public City(){}
@@ -16,6 +19,8 @@ public class City : ICity, ISeed<City>
     {
         this.CityId = other.CityId;
         this.Name = other.Name;
+
+        this.CountryId = other.CountryId;
         this.Country = other.Country;
         this.Seeded = other.Seeded;
     }

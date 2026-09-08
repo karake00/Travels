@@ -12,19 +12,6 @@ namespace DbContext.Migrations.SqlServerDbContext
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Cities",
-                columns: table => new
-                {
-                    CityId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "varchar(200)", nullable: false),
-                    Seeded = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Cities", x => x.CityId);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Countries",
                 columns: table => new
                 {
@@ -36,6 +23,31 @@ namespace DbContext.Migrations.SqlServerDbContext
                 {
                     table.PrimaryKey("PK_Countries", x => x.CountryId);
                 });
+
+            migrationBuilder.CreateTable(
+                name: "Cities",
+                columns: table => new
+                {
+                    CityId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "varchar(200)", nullable: false),
+                    CountryDbMCountryId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    CountryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Seeded = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Cities", x => x.CityId);
+                    table.ForeignKey(
+                        name: "FK_Cities_Countries_CountryDbMCountryId",
+                        column: x => x.CountryDbMCountryId,
+                        principalTable: "Countries",
+                        principalColumn: "CountryId");
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Cities_CountryDbMCountryId",
+                table: "Cities",
+                column: "CountryDbMCountryId");
         }
 
         /// <inheritdoc />
