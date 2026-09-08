@@ -1,0 +1,11 @@
+using System;
+
+namespace Models;
+
+public interface ICity
+{
+    Guid CityId { get; set; }
+    string Name { get; set; }
+
+    ICountry Country { get; set; }
+}

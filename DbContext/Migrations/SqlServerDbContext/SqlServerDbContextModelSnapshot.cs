@@ -22,6 +22,24 @@ namespace DbContext.Migrations.SqlServerDbContext
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("DbModels.CityDbM", b =>
+                {
+                    b.Property<Guid>("CityId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("varchar(200)");
+
+                    b.Property<bool>("Seeded")
+                        .HasColumnType("bit");
+
+                    b.HasKey("CityId");
+
+                    b.ToTable("Cities");
+                });
+
             modelBuilder.Entity("DbModels.CountryDbM", b =>
                 {
                     b.Property<Guid>("CountryId")
@@ -31,6 +49,9 @@ namespace DbContext.Migrations.SqlServerDbContext
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("varchar(200)");
+
+                    b.Property<bool>("Seeded")
+                        .HasColumnType("bit");
 
                     b.HasKey("CountryId");
 
