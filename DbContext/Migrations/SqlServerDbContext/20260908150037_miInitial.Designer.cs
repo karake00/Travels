@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DbContext.Migrations.SqlServerDbContext
 {
     [DbContext(typeof(MainDbContext.SqlServerDbContext))]
-    [Migration("20260908144010_miInitial")]
+    [Migration("20260908150037_miInitial")]
     partial class miInitial
     {
         /// <inheritdoc />
@@ -31,9 +31,6 @@ namespace DbContext.Migrations.SqlServerDbContext
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("CountryDbMCountryId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<Guid>("CountryId")
                         .HasColumnType("uniqueidentifier");
 
@@ -46,9 +43,9 @@ namespace DbContext.Migrations.SqlServerDbContext
 
                     b.HasKey("CityId");
 
-                    b.HasIndex("CountryDbMCountryId");
+                    b.HasIndex("CountryId");
 
-                    b.ToTable("Cities");
+                    b.ToTable("Cities", "supusr");
                 });
 
             modelBuilder.Entity("DbModels.CountryDbM", b =>
@@ -66,14 +63,16 @@ namespace DbContext.Migrations.SqlServerDbContext
 
                     b.HasKey("CountryId");
 
-                    b.ToTable("Countries");
+                    b.ToTable("Countries", "supusr");
                 });
 
             modelBuilder.Entity("DbModels.CityDbM", b =>
                 {
                     b.HasOne("DbModels.CountryDbM", "CountryDbM")
                         .WithMany("CitiesDbM")
-                        .HasForeignKey("CountryDbMCountryId");
+                        .HasForeignKey("CountryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("CountryDbM");
                 });

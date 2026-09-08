@@ -7,6 +7,10 @@ using Models;
 
 namespace DbModels;
 
+
+//Mapping the class to table "Cities" and place it in "supusr"
+//So that access rights within the datebase can be managed later.
+[Table("Cities", Schema = "supusr")]
 public class CityDbM : City
 {
     //Tell EF Core that this is the primarykey (PK)
@@ -25,7 +29,10 @@ public class CityDbM : City
         set => CountryDbM = value as CountryDbM;
     }
 
-    //Preventing infinite loops
+
+    //Tell EF Core which column stores the ID
+    //JsonIgnore preventing infinite loops
+    [ForeignKey("CountryId")]
     [JsonIgnore]
     public virtual CountryDbM CountryDbM {get; set;}
 }

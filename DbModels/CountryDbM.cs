@@ -9,6 +9,9 @@ using Models;
 
 namespace DbModels;
 
+//Mapping the class to table "Countries" and place it in "supusr"
+//So that access rights within the datebase can be managed later.
+[Table("Countries", Schema = "supusr")]
 public class CountryDbM : Country
 {
     //Tell EF Core that this is the primarykey (PK)

@@ -11,8 +11,12 @@ namespace DbContext.Migrations.SqlServerDbContext
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.EnsureSchema(
+                name: "supusr");
+
             migrationBuilder.CreateTable(
                 name: "Countries",
+                schema: "supusr",
                 columns: table => new
                 {
                     CountryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -26,11 +30,11 @@ namespace DbContext.Migrations.SqlServerDbContext
 
             migrationBuilder.CreateTable(
                 name: "Cities",
+                schema: "supusr",
                 columns: table => new
                 {
                     CityId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "varchar(200)", nullable: false),
-                    CountryDbMCountryId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     CountryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Seeded = table.Column<bool>(type: "bit", nullable: false)
                 },
@@ -38,26 +42,31 @@ namespace DbContext.Migrations.SqlServerDbContext
                 {
                     table.PrimaryKey("PK_Cities", x => x.CityId);
                     table.ForeignKey(
-                        name: "FK_Cities_Countries_CountryDbMCountryId",
-                        column: x => x.CountryDbMCountryId,
+                        name: "FK_Cities_Countries_CountryId",
+                        column: x => x.CountryId,
+                        principalSchema: "supusr",
                         principalTable: "Countries",
-                        principalColumn: "CountryId");
+                        principalColumn: "CountryId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Cities_CountryDbMCountryId",
+                name: "IX_Cities_CountryId",
+                schema: "supusr",
                 table: "Cities",
-                column: "CountryDbMCountryId");
+                column: "CountryId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Cities");
+                name: "Cities",
+                schema: "supusr");
 
             migrationBuilder.DropTable(
-                name: "Countries");
+                name: "Countries",
+                schema: "supusr");
         }
     }
 }
