@@ -1,6 +1,11 @@
+using System.Threading.Tasks;
+using Models.DTO;
+
 namespace Services;
 
 public interface IAdminService
 {
-    public Task SeedAsync(int nrItems);
+    public Task<ResponseItemDto<GstUsrInfoAllDto>> GuestInfoAsync();
+    public Task<ResponseItemDto<GstUsrInfoAllDto>> SeedAsync(int nrOfItems);
+    public Task<ResponseItemDto<GstUsrInfoAllDto>> RemoveSeedAsync(bool seeded);
 }

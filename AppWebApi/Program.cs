@@ -55,8 +55,12 @@ builder.Services.AddInMemoryLogger();
 
 //Inject DbRepos and Services
 builder.Services.AddScoped<AdminDbRepos>();
+builder.Services.AddScoped<CountriesDbRepos>();
+builder.Services.AddScoped<CitiesDbRepos>();
 
 builder.Services.AddScoped<IAdminService, AdminServiceDb>();
+builder.Services.AddScoped<ICountriesService, CountriesServiceDb>();
+builder.Services.AddScoped<ICitiesService, CitiesServiceDb>();
 
 var app = builder.Build();
 
