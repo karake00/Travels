@@ -10,4 +10,6 @@ public interface ICity
     Guid CountryId {get;set;}
 
     ICountry Country { get; set; }
+
+    List<IAddress> Addresses {get; set;}
 }

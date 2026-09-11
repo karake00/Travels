@@ -25,7 +25,7 @@ public class CountryDbM : Country, IEquatable<CountryDbM>, ISeed<CountryDbM>
 
     //Tell EF Core to not create this list (database can not create a list with interface)
     [NotMapped]
-    public override List<ICity> Cities {get; set;}
+    public override List<ICity> Cities {get => CitiesDbM?.ToList<ICity>(); set => new NotImplementedException();}
 
     //Preventing infinite loops
     [JsonIgnore]

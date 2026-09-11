@@ -1,5 +1,6 @@
 using System;
 using Seido.Utilities.SeedGenerator;
+using System.Collections.Generic;
 
 namespace Models;
 
@@ -13,6 +14,7 @@ public class City : ICity, ISeed<City>
 
     //Model relationship: One City belongs to one Country
     public virtual ICountry Country { get; set; }
+    public virtual List<IAddress> Addresses {get; set;}
     
     public bool Seeded { get; set; } = false;
 
@@ -26,6 +28,8 @@ public class City : ICity, ISeed<City>
 
         this.CountryId = other.CountryId;
         this.Seeded = other.Seeded;
+
+        this.Addresses = (other.Addresses != null) ? other.Addresses.Select(c => new Address((Address)c)).ToList<IAddress>() : null;
     }
 
     public virtual City Seed(SeedGenerator sgen)
