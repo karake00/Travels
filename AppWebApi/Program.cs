@@ -57,10 +57,18 @@ builder.Services.AddInMemoryLogger();
 builder.Services.AddScoped<AdminDbRepos>();
 builder.Services.AddScoped<CountriesDbRepos>();
 builder.Services.AddScoped<CitiesDbRepos>();
+builder.Services.AddScoped<AddressesDbRepos>();
+builder.Services.AddScoped<AttractionsDbRepos>();
+builder.Services.AddScoped<UsersDbRepos>();
+builder.Services.AddScoped<ReviewsDbRepos>();
 
 builder.Services.AddScoped<IAdminService, AdminServiceDb>();
 builder.Services.AddScoped<ICountriesService, CountriesServiceDb>();
 builder.Services.AddScoped<ICitiesService, CitiesServiceDb>();
+builder.Services.AddScoped<IAddressesService, AddressesServiceDb>();
+builder.Services.AddScoped<IAttractionsService, AttractionsServiceDb>();
+builder.Services.AddScoped<IUsersService, UsersServiceDb>();
+builder.Services.AddScoped<IReviewsService, ReviewsServiceDb>();
 
 var app = builder.Build();
 

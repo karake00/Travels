@@ -1,18 +1,12 @@
 ﻿﻿using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using System;
-using System.IO;
-using System.Linq;
 
+using Seido.Utilities.SeedGenerator;
+using Models.DTO;
 using DbModels;
 using DbContext;
 using Configuration;
-using Models;
-using Models.DTO;
-using Seido.Utilities.SeedGenerator;
 
 namespace DbRepos;
 
@@ -30,8 +24,10 @@ public class AdminDbRepos
         _dbContext = context;
     }
 
-    // Retrieves database overview and statistics for guest user view
-    public async Task<ResponseItemDto<GstUsrInfoAllDto>> InfoAsync()
+    public async Task<ResponseItemDto<GstUsrInfoAllDto>> InfoAsync() => await DbInfo();
+
+
+    private async Task<ResponseItemDto<GstUsrInfoAllDto>> DbInfo()
     {
         var info = new GstUsrInfoAllDto();
         info.Db = new GstUsrInfoDbDto
@@ -39,9 +35,21 @@ public class AdminDbRepos
             NrSeededCountries = await _dbContext.Countries.Where(c => c.Seeded).CountAsync(),
             NrUnseededCountries = await _dbContext.Countries.Where(c => !c.Seeded).CountAsync(),
             NrCountriesWithCities = await _dbContext.Countries.Where(c => c.CitiesDbM.Count > 0).CountAsync(),
-
+            
             NrSeededCities = await _dbContext.Cities.Where(c => c.Seeded).CountAsync(),
-            NrUnseededCities = await _dbContext.Cities.Where(c => !c.Seeded).CountAsync()
+            NrUnseededCities = await _dbContext.Cities.Where(c => !c.Seeded).CountAsync(),
+            
+            NrSeededAddresses = await _dbContext.Addresses.Where(a => a.Seeded).CountAsync(),
+            NrUnseededAddresses = await _dbContext.Addresses.Where(a => !a.Seeded).CountAsync(),
+            
+            NrSeededAttractions = await _dbContext.Attractions.Where(a => a.Seeded).CountAsync(),
+            NrUnseededAttractions = await _dbContext.Attractions.Where(a => !a.Seeded).CountAsync(),
+            
+            NrSeededUsers = await _dbContext.Users.Where(u => u.Seeded).CountAsync(),
+            NrUnseededUsers = await _dbContext.Users.Where(u => !u.Seeded).CountAsync(),
+            
+            NrSeededReviews = await _dbContext.Reviews.Where(r => r.Seeded).CountAsync(),
+            NrUnseededReviews = await _dbContext.Reviews.Where(r => !r.Seeded).CountAsync()
         };
 
         return new ResponseItemDto<GstUsrInfoAllDto>
@@ -53,65 +61,103 @@ public class AdminDbRepos
         };
     }
 
-    // Seeds the database with custom WoW countries and cities, then returns updated statistics
+
     public async Task<ResponseItemDto<GstUsrInfoAllDto>> SeedAsync(int nrItems)
     {
-        // Remove existing seeded data before generating new items
+        // Clear database from all seeded data
         await RemoveSeedAsync(true);
 
-        // Create the seeder pointing to the full path of the JSON seed file
+        // Create a seeder
         var fn = Path.GetFullPath(_seedSource);
         var seeder = new SeedGenerator(fn);
 
-        // Retrieve unique countries from the custom seed generator
-        _logger.LogInformation("Generating countries...");
-        var countries = seeder.UniqueItemsToList<CountryDbM>(5);
+        #region Full seeding
 
-        // Assign matching cities to each generated country
-        _logger.LogInformation("Assigning matching cities to countries...");
-        int countPerCountry = nrItems > 0 ? (nrItems / 5) : 20;
+        //Generate a list with data to every table (except reviews)
+        var users = seeder.ItemsToList<UserDbM>(50); //Generates 50 users
+        var countries = seeder.UniqueItemsToList<CountryDbM>(5); //Generates 5 unique countries
+        var cities = seeder.ItemsToList<CityDbM>(100); //Generates 100 cities 
+        var addresses = seeder.ItemsToList<AddressDbM>(200); //Generates 200 addresses
+        var attractions = seeder.ItemsToList<AttractionDbM>(nrItems < 1000 ? 1000 : nrItems); //Generates 1000 attractions if input is under 1000, else it generates nrItems
 
-        foreach (var country in countries)
+        //Link cities to country
+        foreach (var city in cities)
         {
-            var citiesForCountry = new List<CityDbM>();
-            for (int i = 0; i < countPerCountry; i++)
-            {
-                citiesForCountry.Add(new CityDbM
-                {
-                    CityId = Guid.NewGuid(),
-
-                    // Sending the country name to seeder.City() to fetch custom WoW city data for that specific country
-                    Name = seeder.City(country.Name),
-                    Seeded = true
-                });
-            }
-
-            // Assign the list of cities to the parent country's navigation property
-            country.CitiesDbM = citiesForCountry;
+            city.CountryDbM = seeder.FromList(countries);
         }
 
-        _logger.LogInformation("Adding countries...");
+        //Link addresses to cities
+        foreach (var address in addresses)
+        {
+            address.CityDbM = seeder.FromList(cities);
+        }
 
-        // Add parent list to context. EF Core Change Tracker automatically handles related entities
+        //Link attractions to addresses and reviews to users
+        foreach (var attraction in attractions)
+        {
+            //Link attraction to address
+            attraction.AddressDbM = seeder.FromList(addresses);
+
+            //Generate data to reviews, 0 to 20 reviews per attraction
+            var reviews = seeder.ItemsToList<ReviewDbM>(seeder.Next(0, 21));
+
+            //Link reviews to users
+            foreach (var review in reviews)
+            {
+                review.UserDbM = seeder.FromList(users);
+            }
+            //Link attraction to reviews
+            attraction.ReviewsDbM = reviews;
+        }
+
+        //Save everything in EF Core
+        await _dbContext.Users.AddRangeAsync(users);
         await _dbContext.Countries.AddRangeAsync(countries);
+        await _dbContext.Cities.AddRangeAsync(cities);
+        await _dbContext.Addresses.AddRangeAsync(addresses);
+        await _dbContext.Attractions.AddRangeAsync(attractions);
+
+        #endregion
+
+        LogChangeTracker();
         await _dbContext.SaveChangesAsync();
+        LogChangeTracker();
 
-        _logger.LogInformation("Database successfully seeded!");
-
-        // Return updated database statistics after seeding
-        return await InfoAsync();
+        return await DbInfo();
     }
 
-    // Removes seeded or unseeded data from the database
     public async Task<ResponseItemDto<GstUsrInfoAllDto>> RemoveSeedAsync(bool seeded)
     {
-        _logger.LogInformation("Clearing database from seeded data...");
+        _dbContext.Reviews.RemoveRange(_dbContext.Reviews.Where(f => f.Seeded == seeded));
+        _dbContext.Users.RemoveRange(_dbContext.Users.Where(f => f.Seeded == seeded));
+        _dbContext.Attractions.RemoveRange(_dbContext.Attractions.Where(f => f.Seeded == seeded));
+        _dbContext.Addresses.RemoveRange(_dbContext.Addresses.Where(f => f.Seeded == seeded));
         _dbContext.Cities.RemoveRange(_dbContext.Cities.Where(c => c.Seeded == seeded));
         _dbContext.Countries.RemoveRange(_dbContext.Countries.Where(c => c.Seeded == seeded));
 
+        LogChangeTracker();
         await _dbContext.SaveChangesAsync();
+        LogChangeTracker();
 
-        // Return updated database statistics after cleanup
-        return await InfoAsync();
+        return await DbInfo();
+    }
+
+    private void LogChangeTracker()
+    {
+        foreach (var e in _dbContext.ChangeTracker.Entries())
+        {
+            var id = e.Entity switch
+            {
+                CountryDbM countryDbM => countryDbM.CountryId,
+                CityDbM cityDbM => cityDbM.CityId,
+                AddressDbM addressDbM => addressDbM.AddressId,
+                AttractionDbM attractionDbM => attractionDbM.AttractionId,
+                ReviewDbM reviewDbM => reviewDbM.ReviewId,
+                UserDbM userDbM => userDbM.UserId,
+                _ => Guid.Empty
+            };
+
+            _logger.LogInformation($"{nameof(LogChangeTracker)}: {e.Entity.GetType().Name}: {id} - {e.State}");
+        }
     }
 }

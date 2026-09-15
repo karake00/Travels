@@ -181,27 +181,27 @@
     {
       "jsonCountry": "Eastern Kingdoms",
       "jsonCities": "Stormwind City, Ironforge, Booty Bay",
-      "jsonStreets": "Trade District 1, Old Town 5, Mage Quarter 12, The Great Forge 1, Tinker Town 3, The Docks 1"
+      "jsonStreets": "Trade District, Old Town, Mage Quarter, The Great Forge, Tinker Town, The Docks"
     },
     {
       "jsonCountry": "Kalimdor",
       "jsonCities": "Orgrimmar, Thunder Bluff, Gadgetzan",
-      "jsonStreets": "Valley of Strength 1, Valley of Honor 3, The Drag 2, Elder Rise 1, Hunter Rise 2, Gadgetzan Market 1"
+      "jsonStreets": "Valley of Strength, Valley of Honor, The Drag, Elder Rise, Hunter Rise, Gadgetzan Market"
     },
     {
       "jsonCountry": "Northrend",
       "jsonCities": "Dalaran, Kamagua",
-      "jsonStreets": "Runeweaver Square 1, Krasus Landing 1, Kamagua Village 1"
+      "jsonStreets": "Runeweaver Square, Krasus Landing, Kamagua Village"
     },
     {
       "jsonCountry": "Pandaria",
       "jsonCities": "Halfhill",
-      "jsonStreets": "The Tillers Market 1, Stormstout Brewery Road 1"
+      "jsonStreets": "The Tillers Market, Stormstout Brewery Road"
     },
     {
       "jsonCountry": "Zandalar",
       "jsonCities": "Dazar'alor",
-      "jsonStreets": "The Great Seal 1, Zocalo 1, Port of Zandalar 1"
+      "jsonStreets": "The Great Seal, Zocalo, Port of Zandalar"
     }
   ],
   "Names": {
