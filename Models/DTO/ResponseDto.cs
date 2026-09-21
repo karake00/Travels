@@ -12,7 +12,7 @@ public class ResponsePageDto<T>
 
     public int PageNr { get; init; }
     public int PageSize { get; init; }
-    public int PageCount => (PageSize > 0) ? (int)Math.Ceiling((double)DbItemsCount / PageSize) : 0;
+    public int PageCount => (int)Math.Ceiling((double)DbItemsCount / PageSize);
 }
 
 public class ResponseItemDto<T>

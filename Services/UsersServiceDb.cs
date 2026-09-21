@@ -22,5 +22,5 @@ public class UsersServiceDb : IUsersService
     }
 
     //Simple 1:1 calls in this case, but as Services expands, this will no longer need to be the case
-    public Task<ResponsePageDto<IUser>> ReadUsersAsync() => _repo.ReadUsersAsync();
+    public Task<ResponsePageDto<IUser>> ReadUsersAsync(bool seeded, bool flat, string filter, int pageNumber, int pageSize) => _repo.ReadUsersAsync(seeded, flat, filter, pageNumber, pageSize);
 }

@@ -10,7 +10,7 @@ using Models.DTO;
 namespace AppWebApi.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/[controller]/[action]")]
 public class AttractionsController : ControllerBase
 {
     private readonly ILogger<AttractionsController> _logger;
@@ -22,14 +22,48 @@ public class AttractionsController : ControllerBase
         _service = service;
     }
 
-    // GET: api/Attractions
+    // GET: api/Attractions/read
     [HttpGet]
     [ProducesResponseType(200, Type = typeof(ResponsePageDto<IAttraction>))]
-    public async Task<IActionResult> ReadAttractions()
+    public async Task<IActionResult> ReadAttractions(bool seeded = true, bool flat = false, string filter = null, int pageNumber = 0, int pageSize = 10)
     {
         try
         {
-            var result = await _service.ReadAttractionsAsync();
+            var result = await _service.ReadAttractionsAsync(seeded, flat, filter, pageNumber, pageSize);
+            return Ok(result);
+        }
+        catch (Exception ex)
+        {
+            _logger?.LogError($"{nameof(ReadAttractions)}: {ex.Message}");
+            return BadRequest(ex.Message);
+        }
+    }
+
+    // GET: api/Attractions/readWithoutComment
+    [HttpGet]
+    [ProducesResponseType(200, Type = typeof(ResponsePageDto<IAttraction>))]
+    public async Task<IActionResult> ReadAttractionsWithoutComments(bool seeded = true, bool flat = false, int pageNumber = 0, int pageSize = 10)
+    {
+        try
+        {
+            var result = await _service.ReadAttractionsWithoutCommentsAsync(seeded, flat, pageNumber, pageSize);
+            return Ok(result);
+        }
+        catch (Exception ex)
+        {
+            _logger?.LogError($"{nameof(ReadAttractions)}: {ex.Message}");
+            return BadRequest(ex.Message);
+        }
+    }
+
+    // GET: api/Attractions/readitem?id=...
+    [HttpGet]
+    [ProducesResponseType(200, Type = typeof(ResponseItemDto<IAttraction>))]
+    public async Task<IActionResult> ReadAttraction(Guid id, bool flat = false)
+    {
+        try
+        {
+            var result = await _service.ReadAttractionAsync(id, flat);
             return Ok(result);
         }
         catch (Exception ex)

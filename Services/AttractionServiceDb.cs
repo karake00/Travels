@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using Models;
 using Models.DTO;
 using DbRepos;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Services;
 
@@ -21,6 +22,9 @@ public class AttractionsServiceDb : IAttractionsService
         _logger = logger;
     }
 
+
     //Simple 1:1 calls in this case, but as Services expands, this will no longer need to be the case
-    public Task<ResponsePageDto<IAttraction>> ReadAttractionsAsync() => _repo.ReadAttractionsAsync();
+    public Task<ResponsePageDto<IAttraction>> ReadAttractionsAsync(bool seeded, bool flat, string filter, int pageNumber, int pageSize) => _repo.ReadAttractionsAsync(seeded, flat, filter, pageNumber, pageSize);
+    public Task<ResponsePageDto<IAttraction>> ReadAttractionsWithoutCommentsAsync(bool seeded, bool flat, int pageNumber, int pageSize) => _repo.ReadAttractionsWithoutCommentsAsync(seeded, flat, pageNumber, pageSize);
+    public Task<ResponseItemDto<IAttraction>> ReadAttractionAsync(Guid id, bool flat) => _repo.ReadAttractionAsync(id, flat);
 }

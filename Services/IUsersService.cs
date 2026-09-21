@@ -5,5 +5,5 @@ namespace Services;
 
 public interface IUsersService
 {
-    public Task<ResponsePageDto<IUser>> ReadUsersAsync();
+    public Task<ResponsePageDto<IUser>> ReadUsersAsync(bool seeded, bool flat, string filter, int pageNumber, int pageSize);
 }

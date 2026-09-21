@@ -25,11 +25,11 @@ public class UsersController : ControllerBase
     // GET: api/Users
     [HttpGet]
     [ProducesResponseType(200, Type = typeof(ResponsePageDto<IUser>))]
-    public async Task<IActionResult> ReadUsers()
+    public async Task<IActionResult> ReadUsers(bool seeded = true, bool flat = false, string filter = null, int pageNumber = 0, int pageSize = 10)
     {
         try
         {
-            var result = await _service.ReadUsersAsync();
+            var result = await _service.ReadUsersAsync(seeded, flat, filter, pageNumber, pageSize);
             return Ok(result);
         }
         catch (Exception ex)
