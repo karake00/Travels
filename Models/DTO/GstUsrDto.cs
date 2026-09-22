@@ -5,7 +5,6 @@ public class GstUsrInfoDbDto
     //Countries
     public int NrSeededCountries { get; set; } = 0;
     public int NrUnseededCountries { get; set; } = 0;
-    public int NrCountriesWithCities { get; set; } = 0;
 
     //Cities
     public int NrSeededCities { get; set; } = 0;

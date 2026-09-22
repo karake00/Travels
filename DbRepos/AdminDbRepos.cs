@@ -7,6 +7,7 @@ using Models.DTO;
 using DbModels;
 using DbContext;
 using Configuration;
+using Microsoft.Data.SqlClient;
 
 namespace DbRepos;
 
@@ -29,27 +30,9 @@ public class AdminDbRepos
 
     private async Task<ResponseItemDto<GstUsrInfoAllDto>> DbInfo()
     {
-        var info = new GstUsrInfoAllDto();
-        info.Db = new GstUsrInfoDbDto
+        var info = new GstUsrInfoAllDto
         {
-            NrSeededCountries = await _dbContext.Countries.Where(c => c.Seeded).CountAsync(),
-            NrUnseededCountries = await _dbContext.Countries.Where(c => !c.Seeded).CountAsync(),
-            NrCountriesWithCities = await _dbContext.Countries.Where(c => c.CitiesDbM.Count > 0).CountAsync(),
-            
-            NrSeededCities = await _dbContext.Cities.Where(c => c.Seeded).CountAsync(),
-            NrUnseededCities = await _dbContext.Cities.Where(c => !c.Seeded).CountAsync(),
-            
-            NrSeededAddresses = await _dbContext.Addresses.Where(a => a.Seeded).CountAsync(),
-            NrUnseededAddresses = await _dbContext.Addresses.Where(a => !a.Seeded).CountAsync(),
-            
-            NrSeededAttractions = await _dbContext.Attractions.Where(a => a.Seeded).CountAsync(),
-            NrUnseededAttractions = await _dbContext.Attractions.Where(a => !a.Seeded).CountAsync(),
-            
-            NrSeededUsers = await _dbContext.Users.Where(u => u.Seeded).CountAsync(),
-            NrUnseededUsers = await _dbContext.Users.Where(u => !u.Seeded).CountAsync(),
-            
-            NrSeededReviews = await _dbContext.Reviews.Where(r => r.Seeded).CountAsync(),
-            NrUnseededReviews = await _dbContext.Reviews.Where(r => !r.Seeded).CountAsync()
+            Db = await _dbContext.InfoDbView.FirstAsync()
         };
 
         return new ResponseItemDto<GstUsrInfoAllDto>
@@ -119,45 +102,34 @@ public class AdminDbRepos
 
         #endregion
 
-        LogChangeTracker();
         await _dbContext.SaveChangesAsync();
-        LogChangeTracker();
 
         return await DbInfo();
     }
 
     public async Task<ResponseItemDto<GstUsrInfoAllDto>> RemoveSeedAsync(bool seeded)
     {
-        _dbContext.Reviews.RemoveRange(_dbContext.Reviews.Where(f => f.Seeded == seeded));
-        _dbContext.Users.RemoveRange(_dbContext.Users.Where(f => f.Seeded == seeded));
-        _dbContext.Attractions.RemoveRange(_dbContext.Attractions.Where(f => f.Seeded == seeded));
-        _dbContext.Addresses.RemoveRange(_dbContext.Addresses.Where(f => f.Seeded == seeded));
-        _dbContext.Cities.RemoveRange(_dbContext.Cities.Where(c => c.Seeded == seeded));
-        _dbContext.Countries.RemoveRange(_dbContext.Countries.Where(c => c.Seeded == seeded));
+        // Create parameters based on database provider
+        var connection = _dbContext.Database.GetDbConnection();
+        using var command = connection.CreateCommand();
 
-        LogChangeTracker();
-        await _dbContext.SaveChangesAsync();
-        LogChangeTracker();
+        // Tell that it is a stored procedure and point to supusr.spDeleteAll
+        command.CommandType = CommandType.StoredProcedure;
+        command.CommandText = "supusr.spDeleteAll";
 
+        // Create the parameter
+        var parameter = new SqlParameter("seededParam", seeded);
+        command.Parameters.Add(parameter);
+
+        // Open connection if it is closed
+        if (connection.State != ConnectionState.Open)
+            await connection.OpenAsync();
+
+        // Execute procedure in SQL server
+        await command.ExecuteNonQueryAsync();
+
+        // Return the updated data from the view
         return await DbInfo();
     }
 
-    private void LogChangeTracker()
-    {
-        foreach (var e in _dbContext.ChangeTracker.Entries())
-        {
-            var id = e.Entity switch
-            {
-                CountryDbM countryDbM => countryDbM.CountryId,
-                CityDbM cityDbM => cityDbM.CityId,
-                AddressDbM addressDbM => addressDbM.AddressId,
-                AttractionDbM attractionDbM => attractionDbM.AttractionId,
-                ReviewDbM reviewDbM => reviewDbM.ReviewId,
-                UserDbM userDbM => userDbM.UserId,
-                _ => Guid.Empty
-            };
-
-            _logger.LogInformation($"{nameof(LogChangeTracker)}: {e.Entity.GetType().Name}: {id} - {e.State}");
-        }
-    }
 }

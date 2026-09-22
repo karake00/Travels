@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 
 using Configuration;
+using Models.DTO;
 using DbModels;
 using Microsoft.Extensions.Hosting.Internal;
 using DbContext.Extensions;
@@ -13,7 +14,6 @@ namespace DbContext;
 //used for all Database connection as well as for EFC CodeFirst migration and database updates 
 public class MainDbContext : Microsoft.EntityFrameworkCore.DbContext
 {
-        DatabaseConnections _databaseConnections;
 
 #if DEBUG
     // remove password from connection string in debug mode
@@ -36,18 +36,21 @@ public class MainDbContext : Microsoft.EntityFrameworkCore.DbContext
 
     #region constructors
     public MainDbContext() { }
-    public MainDbContext(DbContextOptions options, DatabaseConnections databaseConnections) : base(options)
-    { 
-        _databaseConnections = databaseConnections;
-    }
+    public MainDbContext(DbContextOptions options) : base(options) 
+    { }
+    #endregion
+
+    #region model the View
+    public DbSet<GstUsrInfoDbDto> InfoDbView { get; set; }
     #endregion
 
     //Here we can modify the migration building
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        #region override modelbuilder
+        #region model the View
+            modelBuilder.Entity<GstUsrInfoDbDto>().ToView("vwInfoDb", "supusr").HasNoKey();
         #endregion
-        
+
         base.OnModelCreating(modelBuilder);
     }
 
@@ -55,8 +58,8 @@ public class MainDbContext : Microsoft.EntityFrameworkCore.DbContext
     public class SqlServerDbContext : MainDbContext
     {
         public SqlServerDbContext() { }
-        public SqlServerDbContext(DbContextOptions options, DatabaseConnections databaseConnections) 
-            : base(options, databaseConnections) { }
+        public SqlServerDbContext(DbContextOptions options) 
+            : base(options) { }
 
 
         //Used only for CodeFirst Database Migration and database update commands
@@ -89,7 +92,7 @@ public class MainDbContext : Microsoft.EntityFrameworkCore.DbContext
     public class MySqlDbContext : MainDbContext
     {
         public MySqlDbContext() { }
-        public MySqlDbContext(DbContextOptions options) : base(options, null) { }
+        public MySqlDbContext(DbContextOptions options) : base(options) { }
 
 
         //Used only for CodeFirst Database Migration
@@ -118,7 +121,7 @@ public class MainDbContext : Microsoft.EntityFrameworkCore.DbContext
     public class PostgresDbContext : MainDbContext
     {
         public PostgresDbContext() { }
-        public PostgresDbContext(DbContextOptions options) : base(options, null){ }
+        public PostgresDbContext(DbContextOptions options) : base(options){ }
 
 
         //Used only for CodeFirst Database Migration
